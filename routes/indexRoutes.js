@@ -1,6 +1,6 @@
 
 
 module.exports = (app) =>{
-  const controller = app.controllers.IndexController;
-  app.get('/', controller.index);
+  const controller = app.controllers.MorrinhosController;
+  app.get('/buscarNoticias', controller.buscarNoticias);
 }
