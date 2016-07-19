@@ -1,6 +1,6 @@
-
-
+const controller = require('../controllers/IndexController.js');
 module.exports = (app) =>{
-  const controller = app.controllers.MorrinhosController;
-  app.get('/buscarNoticias', controller.buscarNoticias);
+  app.get('/news/update', controller.update);
+  app.get('/news/getAll', controller.getAll);
+  app.post('/news/getByCampus', controller.getByCampus)
 }

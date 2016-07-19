@@ -1,10 +1,14 @@
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
+global.logger = require('winston');
+logger.remove(logger.transports.Console)
+logger.add(logger.transports.Console, {colorize:true });
+// logger.level ='debug';
 
 let app = express();
 const load = require('express-load');
@@ -13,11 +17,17 @@ const load = require('express-load');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+//==========================================================
+//================= Banco de Dados =========================
+//==========================================================
+mongoose.Promise = global.Promise;
+const connection = require('./config/db.js')(mongoose);
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// app.use(logger('dev'));
+// app.use(morgan('dev'));
 
-app.use(logger(':date[clf] - :method :url :status :response-time ms - :res[content-length]'))
+app.use(morgan(':date[clf] - :method :url :status :response-time ms - :res[content-length]'))
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,8 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**********************
  ******** ROTAS *******
  **********************/
-load('controllers')
-    .then('routes')
+load('routes')
     .into(app);
 
 // catch 404 and forward to error handler
