@@ -1,0 +1,15 @@
+module.exports = {
+  '': 'Reitoria',
+  'campos-belos': 'Campos Belos',
+  'catalao': 'Catalão',
+  'ceres': 'Ceres',
+  'cristalina': 'Cristalina',
+  'hidrolandia': 'Hidrolândia',
+  'ipameri': 'Ipameri',
+  'ipora': 'Iporá',
+  'morrinhos': 'Morrinhos',
+  'posse': 'Posse',
+  'rio-verde': 'Rio Verde',
+  'trindade': 'Trindade',
+  'urutai': 'Urutaí',
+}
