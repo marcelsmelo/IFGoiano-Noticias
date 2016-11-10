@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 global.logger = require('winston');
 logger.remove(logger.transports.Console)
 logger.add(logger.transports.Console, {colorize:true });
-// logger.level ='debug';
+//logger.level ='debug';
 
 let app = express();
 const load = require('express-load');
