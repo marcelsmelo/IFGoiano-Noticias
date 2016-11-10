@@ -10,7 +10,7 @@ module.exports = {
     res.status(200).json({success: true});
   },
   getAll:(req, res, next)=>{
-      Noticia.find({}, null, {sort: {date: -1}})
+      Noticia.find({}, null, {sort: {idSite: -1}})
       .then((result)=>{
          logger.info('Notícias recuperadas com sucesso!');
          res.status(200).json({success:true, data:result});
