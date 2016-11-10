@@ -28,7 +28,6 @@ module.exports = {
       idSite:1,
       title: 1,
       subtitle: 1,
-      description: 1,
       url: 1, 
       date:1,
       dataString:1,
