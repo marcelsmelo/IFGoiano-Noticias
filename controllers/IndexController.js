@@ -2,7 +2,7 @@ const campus = require('../models/campusIFGoiano.js');
 const Noticia = require('../models/NoticiaModel.js');
 module.exports = {
   update: (req, res, next)=>{
-    for(let id=4000; id<4244; id++){
+    for(let id=1000; id<4244; id++){
       setTimeout(function() {
         require('../lib/atualizarNoticias.js')(id)
       },3000);
