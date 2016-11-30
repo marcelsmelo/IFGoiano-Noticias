@@ -2,25 +2,11 @@ const campus = require('../models/campusIFGoiano.js');
 const Noticia = require('../models/NoticiaModel.js');
 module.exports = {
   update: (req, res, next)=>{
-    for(let id=1000; id<4244; id++){
-      setTimeout(function() {
-        require('../lib/atualizarNoticias.js')(id)
-      },3000);
-    }
+    logger.info('Atualizando notícias do site IFGoiano.edu.br')
+    require('../lib/updateNews.js')();
     res.status(200).json({success: true});
   },
-  getAll:(req, res, next)=>{
-      Noticia.find({}, null, {sort: {idSite: -1}})
-      .then((result)=>{
-         logger.info('Notícias recuperadas com sucesso!');
-         res.status(200).json({success:true, data:result});
-      })
-      .catch((err) => {
-         logger.error(err);
-         res.status(500).json({success: false, msg: 'Erro ao buscar as notícias. Tente novamente!'})
-      });
-  },
-  getByCampus: (req, res, next)=>{
+  getNews: (req, res, next)=>{
     // const t = Object.keys(req.body)
     //     .filter((key)=> req.body[key] === 'true');
     // console.log('QUERY', t);
@@ -34,14 +20,23 @@ module.exports = {
       campus: 1
     };
 
-    const options = {
+    let options = {
       skip: 0,
-      limit: 50,
       sort: {idSite: -1},
     };
-    const t = ['Morrinhos', 'Reitoria']
+
+    let query = {}
+    if(req.body.campus !== undefined && req.body.campus !== ''){
+      query = {campus: {$in: req.body.campus}}
+    }
+
+    if(req.body.limit !== undefined && req.body.limit != ''){
+      options.limit = parseInt(req.body.limit)
+    }
+
+    //const query = ['Morrinhos', 'Reitoria']
     // Noticia.find({campus: {$in: t}}, fields, options)
-    Noticia.find({campus: {$in: t}}, fields, options)
+    Noticia.find(query, fields, options)
     .then((result)=>{
       logger.info('Notícias recuperadas com sucesso!');
       res.status(200).json({success:true, data:result});
