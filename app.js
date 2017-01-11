@@ -47,7 +47,7 @@ load('routes')
 setInterval(() => {
     logger.info('Atualizando notícias do site IFGoiano.edu.br')
     require('../lib/updateNews.js')();
-}, 10 * 1000)
+}, 5 * 60 * 1000)
 
 
 // catch 404 and forward to error handler
