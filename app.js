@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors);
+//app.use(cors);
 
 /**********************
  ******** ROTAS *******
@@ -44,9 +44,10 @@ app.use(cors);
 load('routes')
     .into(app);
 
+//Atualiza as notícias a cada 10 minutos
 setInterval(() => {
     logger.info('Atualizando notícias do site IFGoiano.edu.br')
-    require('../lib/updateNews.js')();
+    require('./lib/updateNews.js')();
 }, 5 * 60 * 1000)
 
 
