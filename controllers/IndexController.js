@@ -27,11 +27,15 @@ module.exports = {
 
     let query = {}
     if(req.body.campus !== undefined && req.body.campus !== ''){
-      query = {campus: {$in: req.body.campus}}
+      query.campus = {$in: req.body.campus}
     }
 
     if(req.body.limit !== undefined && req.body.limit != ''){
       options.limit = parseInt(req.body.limit)
+    }
+
+    if(req.body.maxID !== undefined && req.body.maxID != ''){
+      query.idSite = {$gt: req.body.maxID}
     }
 
     //const query = ['Morrinhos', 'Reitoria']

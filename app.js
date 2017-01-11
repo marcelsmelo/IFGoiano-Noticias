@@ -9,8 +9,8 @@ const cors = require('cors');
 
 global.logger = require('winston');
 logger.remove(logger.transports.Console)
-logger.add(logger.transports.Console, {colorize:true });
-//logger.level ='debug';
+logger.add(logger.transports.Console, { colorize: true });
+logger.level = 'debug';
 
 let app = express();
 const load = require('express-load');
@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(cors);
+app.use(cors);
 
 /**********************
  ******** ROTAS *******
@@ -44,16 +44,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 load('routes')
     .into(app);
 
-// setInterval(()=>{
-//   callFunction
-// }, 10*1000)
+setInterval(() => {
+    logger.info('Atualizando notícias do site IFGoiano.edu.br')
+    require('../lib/updateNews.js')();
+}, 10 * 1000)
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -61,23 +62,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 
