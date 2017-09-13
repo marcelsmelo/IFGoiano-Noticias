@@ -7,17 +7,17 @@ module.exports = {
         res.status(200).json({ success: true });
     },
     getNews: (req, res, next) => {
-        // const t = Object.keys(req.body)
-        //     .filter((key)=> req.body[key] === 'true');
-        // console.log('QUERY', t);
-        console.log('heeeeseere')
+
+        console.log('QUERY', req.body);
+
+
         const fields = {
             idSite: 1,
             title: 1,
             subtitle: 1,
             url: 1,
             date: 1,
-            dataString: 1,
+            dateString: 1,
             campus: 1
         };
 
@@ -27,16 +27,20 @@ module.exports = {
         };
 
         let query = {}
-        if (req.query.campus !== undefined && req.query.campus !== '') {
-            query.campus = { $in: req.query.campus }
+        if (req.body.campus !== undefined && req.body.campus !== '') {
+            const queryCampus = JSON.parse(req.body.campus);
+            const t = Object.keys(queryCampus)
+                .filter((key) => queryCampus[key] === true)
+                .map((elem) => campus[elem])
+            query.campus = { $in: t }
         }
 
-        if (req.query.limit !== undefined && req.query.limit != '') {
-            options.limit = parseInt(req.query.limit)
+        if (req.body.limit !== undefined && req.body.limit != '') {
+            options.limit = parseInt(req.body.limit)
         }
 
-        if (req.query.maxID !== undefined && req.query.maxID != '') {
-            query.idSite = { $gt: req.query.maxID }
+        if (req.body.maxID !== undefined && req.body.maxID != '') {
+            query.idSite = { $gt: req.body.maxID }
         }
 
         //const query = ['Morrinhos', 'Reitoria']

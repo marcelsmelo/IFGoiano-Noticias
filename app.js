@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cors = require('cors');
 
 global.logger = require('winston');
 logger.remove(logger.transports.Console)
@@ -14,6 +13,27 @@ logger.level = 'debug';
 
 let app = express();
 const load = require('express-load');
+
+// var allowCrossDomain = function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Origin, Authorization, Content-Length, X-Requested-With');
+
+//     // intercept OPTIONS method
+//     if ('OPTIONS' == req.method) {
+//         res.send(200);
+//     } else {
+//         next();
+//     }
+// };
+
+// app.use(allowCrossDomain);
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,7 +56,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(cors);
+
 
 /**********************
  ******** ROTAS *******
@@ -45,10 +65,10 @@ load('routes')
     .into(app);
 
 //Atualiza as notícias a cada 10 minutos
-setInterval(() => {
-    logger.info('Atualizando notícias do site IFGoiano.edu.br')
-    require('./lib/updateNews.js')();
-}, 5 * 60 * 1000)
+// setInterval(() => {
+//     logger.info('Atualizando notícias do site IFGoiano.edu.br')
+//     require('./lib/updateNews.js')();
+// }, 10000)
 
 
 // catch 404 and forward to error handler
