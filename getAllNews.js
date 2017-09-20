@@ -1,3 +1,11 @@
+const mongoose = require('mongoose');
+
+//==========================================================
+//================= Banco de Dados =========================
+//==========================================================
+mongoose.Promise = global.Promise;
+const connection = require('./config/db.js')(mongoose);
+
 global.logger = require('winston');
 logger.remove(logger.transports.Console)
 logger.add(logger.transports.Console, { colorize: true });
