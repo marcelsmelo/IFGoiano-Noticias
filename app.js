@@ -61,14 +61,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**********************
  ******** ROTAS *******
  **********************/
-load('routes')
+load('controllers')
+    .then('routes')
     .into(app);
 
 //Atualiza as notícias a cada 10 minutos
-// setInterval(() => {
-//     logger.info('Atualizando notícias do site IFGoiano.edu.br')
-//     require('./lib/updateNews.js')();
-// }, 10000)
+setInterval(() => {
+    logger.info('Atualizando notícias do site IFGoiano.edu.br')
+    require('./lib/updateNews.js')();
+}, (30 * 60000))
 
 
 // catch 404 and forward to error handler

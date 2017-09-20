@@ -2,7 +2,7 @@ global.logger = require('winston');
 logger.remove(logger.transports.Console)
 logger.add(logger.transports.Console, { colorize: true });
 logger.level = 'debug';
-let id = 5000
+let id = 100
 
 let loopObj = setInterval(() => {
     logger.info('GET NEWS ID=' + id)
