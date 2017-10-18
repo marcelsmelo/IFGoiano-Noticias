@@ -8,7 +8,7 @@ module.exports = {
     },
     getNews: (req, res, next) => {
 
-        console.log('QUERY', req.param);
+        console.log('QUERY', req.params);
 
 
         const fields = {
@@ -27,20 +27,20 @@ module.exports = {
         };
 
         let query = {}
-        if (req.param.campus !== undefined && req.param.campus !== '') {
-            const queryCampus = JSON.parse(req.param.campus);
+        if (req.params.campus !== undefined && req.params.campus !== '') {
+            const queryCampus = JSON.parse(req.params.campus);
             const t = Object.keys(queryCampus)
                 .filter((key) => queryCampus[key] === true)
                 .map((elem) => campus[elem])
             query.campus = { $in: t }
         }
 
-        if (req.param.limit !== undefined && req.param.limit != '') {
-            options.limit = parseInt(req.param.limit)
+        if (req.params.limit !== undefined && req.params.limit != '') {
+            options.limit = parseInt(req.params.limit)
         }
 
-        if (req.param.maxID !== undefined && req.param.maxID != '') {
-            query.idSite = { $gt: req.param.maxID }
+        if (req.params.maxID !== undefined && req.params.maxID != '') {
+            query.idSite = { $gt: req.params.maxID }
         }
 
         //const query = ['Morrinhos', 'Reitoria']
