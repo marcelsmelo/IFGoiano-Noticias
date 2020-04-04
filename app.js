@@ -36,14 +36,14 @@ app.use(function(req, res, next) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'hbs');
 
 //==========================================================
 //================= Banco de Dados =========================
 //==========================================================
-mongoose.Promise = global.Promise;
-const connection = require('./config/db.js')(mongoose);
+// mongoose.Promise = global.Promise;
+// const connection = require('./config/dbMongo.js')(mongoose);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
