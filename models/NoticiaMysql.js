@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const sequelize = require('../config/dbMysql');
+const sequelize = require('../database/dbMysql');
 
 const Noticia = sequelize.define('Noticias', {
     idSite: {
