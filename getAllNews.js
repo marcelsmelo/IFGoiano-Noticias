@@ -2,7 +2,13 @@ global.logger = require('winston');
 logger.remove(logger.transports.Console)
 logger.add(logger.transports.Console, { colorize: true });
 logger.level = 'debug';
-let id = 2262
+
+//.env variaveis ambiente
+const dotenv = require('dotenv');
+dotenv.config();
+
+
+let id = 2266
 
 let loopObj = setInterval(() => {
     logger.info('GET NEWS ID=' + id)
