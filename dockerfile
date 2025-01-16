@@ -1,27 +1,22 @@
-FROM node:15
+#docker stop DOCKERID
+#docker image rm -f webservice
+#docker build -t webservice .
+#docker run -p 80:3000 --env-file ./.env webservice
 
-#RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+FROM node:14.17
+
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 WORKDIR /home/node/app
 
-ENV NODE_ENV=development
-
-COPY package-lock.json .
-
 COPY package.json .
+
+USER node
 
 RUN npm install
 
-#COPY wait-for-it.sh /home/node/app/wait-for-it.sh
+COPY --chown=node:node . .
 
-#RUN ["chmod", "+x", "/home/node/app/wait-for-it.sh"]
+EXPOSE 3000
 
-COPY . .
-
-#COPY --chown=node:node . .
-
-#USER node
-
-EXPOSE 8080
-
-#CMD ["npm", "start"]
+CMD [ "npm", "start"]
