@@ -1,58 +1,61 @@
-const campus = require('../models/campusIFGoiano.js');
-const Noticia = require('../models/NoticiaModel.js');
+const Noticia = require('../models/NoticiaMysql.js');
+const Op = require('sequelize').Op;
+
 module.exports = {
     update: (req, res, next) => {
         logger.info('Atualizando notícias do site IFGoiano.edu.br')
         require('../lib/updateNews.js')();
         res.status(200).json({ success: true });
     },
-    getNews: (req, res, next) => {
+    getNews: async (req, res, next) => {
 
-        console.log('QUERY', req.query);
+        let sqlQuery = {}
+        sqlQuery.where = {}
+        
+        sqlQuery.attributes = [
+            'idSite',
+            'title',
+            'subtitle',
+            'url',
+            'dataPublicacao',
+            'dateString',
+            'campus'
+        ];
 
+        sqlQuery.order = [
+            ['idSite', 'ASC']
+        ];
 
-        const fields = {
-            idSite: 1,
-            title: 1,
-            subtitle: 1,
-            url: 1,
-            date: 1,
-            dateString: 1,
-            campus: 1
-        };
+        
 
-        let options = {
-            skip: 0,
-            sort: { idSite: -1 },
-        };
-
-        let query = {}
         if (req.query.campus !== undefined && req.query.campus !== '') {
-            const queryCampus = JSON.parse(req.query.campus);
-            const t = Object.keys(queryCampus)
-                .filter((key) => queryCampus[key] === true)
-                .map((elem) => campus[elem])
-            query.campus = { $in: t }
+            console.log("CAMPUS: ", req.query.campus)
+            // const queryCampus = JSON.parse(req.query.campus);
+            // const t = Object.keys(queryCampus)
+            //     .filter((key) => queryCampus[key] === true)
+            //     .map((elem) => campus[elem])
+            sqlQuery.where.campus = { [Op.in] : req.query.campus }
         }
 
         if (req.query.limit !== undefined && req.query.limit != '') {
-            options.limit = parseInt(req.query.limit)
+            console.log("LIMIT: ", req.query.limit)
+            sqlQuery.limit = parseInt(req.query.limit)
         }
 
-        if (req.query.maxID !== undefined && req.query.maxID != '') {
-            query.idSite = { $gt: req.query.maxID }
+        if (req.query.lastId !== undefined && req.query.lastId != '') {
+            console.log("lastId: ", req.query.lastId)
+            sqlQuery.where.idSite = {  [Op.gt]: req.query.lastId }
         }
 
         //const query = ['Morrinhos', 'Reitoria']
         // Noticia.find({campus: {$in: t}}, fields, options)
-        Noticia.find(query, fields, options)
-            .then((result) => {
-                logger.info('Notícias recuperadas com sucesso!');
-                res.status(200).json({ success: true, data: result });
-            })
-            .catch((err) => {
-                logger.error(err);
-                res.status(500).json({ success: false, msg: 'Erro ao buscar as notícias. Tente novamente!' })
-            })
+        try{
+            let noticias = await Noticia.findAll(sqlQuery);
+            logger.info('Notícias recuperadas com sucesso!');
+            return res.status(200).json( noticias );
+        }catch(err){
+            logger.error(err);
+            return res.status(500).json({msg: 'Erro ao buscar as notícias. Tente novamente!'});
+        }
     }
 }

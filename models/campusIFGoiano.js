@@ -12,4 +12,6 @@ module.exports = {
     'rioVerde': 'Rio Verde',
     'trindade': 'Trindade',
     'urutai': 'Urutaí',
+    'poloInovacao': 'Polo de Inovação',
+    'centroReferencia': 'Centro de Referência'
 }

@@ -3,12 +3,21 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+
 
 global.logger = require('winston');
 logger.remove(logger.transports.Console)
 logger.add(logger.transports.Console, { colorize: true });
 logger.level = 'debug';
+
+//Documentação Swagger
+//Importar Swagger-ui-Express e SwaggerJSDoc
+const swaggerUi = require('swagger-ui-express');
+let swaggerJSDoc = require('swagger-jsdoc');
+
+//.env variaveis ambiente
+const dotenv = require('dotenv');
+dotenv.config();
 
 let app = express();
 const load = require('express-load');
@@ -40,19 +49,49 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('*', function(req, res){
-    res.status(200);
-    res.sendFile('index.html');
-});
+//================= Docs Swagger =========================
+//==========================================================
 
+// swagger definition
+let swaggerDefinition = {
+    openapi: '3.0.1',
+    info: {
+      title: 'API aplicativo anúncios', //Nome da API
+      version: '1.0.0', //Versão da API
+      description: 'API de manipulação de anúncios para as disciplinas do TSI',
+    },
+    //host: 'anuncios.marcelmelo.com.br', //URL base da API
+    basePath: '/',
+    components: {
+        securitySchemes:{
+            "BearerAuth": { "type": "http", "scheme": "bearer" }
+        }
+    }
+    
+  };
+  
+  // options for the swagger docs
+  let options = {
+    // import swaggerDefinitions, definido anteriormente
+    swaggerDefinition: swaggerDefinition,
+    // arquivos que contem especificações para geração da documentação
+    apis: ['./docs/modelsDoc.js', './docs/lib.js', './docs/*.js'],
+    
+  };
+  
+  // initialize swagger-jsdoc
+  let swaggerSpec = swaggerJSDoc(options);
+
+  //Rota para acessar a documentação
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 /**********************
  ******** ROTAS *******
  **********************/
-// load('controllers')
-//     .then('routes')
-//     .into(app);
+load('controllers')
+    .then('routes')
+    .into(app);
 
 //Atualiza as notícias a cada 10 minutos
 setInterval(() => {

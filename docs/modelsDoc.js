@@ -1,0 +1,20 @@
+/** 
+  @swagger
+  {
+    "components":{
+      "schemas":{
+        "Noticia":{
+          "properties":{
+            "idSite": {"type":"integer"},
+            "title":{"type":"string"},
+            "subtitle":{"type":"string"},
+            "url":{"type":"string"},
+            "campus":{"type":"string"},
+            "dateString":{"type":"string"},
+            "dataPublicacao":{"type":"date"}
+          }
+        },
+      }
+    }
+  }
+*/

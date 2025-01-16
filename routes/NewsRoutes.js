@@ -1,5 +1,5 @@
 const controller = require('../controllers/NewsController.js');
 module.exports = (app) => {
-    app.put('/news', controller.update);
-    app.get('/news', controller.getNews);
+    app.put('/noticias', controller.update);
+    app.get('/noticias', controller.getNews);
 }
