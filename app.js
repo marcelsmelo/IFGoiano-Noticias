@@ -20,17 +20,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 let app = express();
+app.use(cors());
+
 const load = require('express-load');
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
