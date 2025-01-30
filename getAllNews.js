@@ -7,8 +7,7 @@ logger.level = 'debug';
 const dotenv = require('dotenv');
 dotenv.config();
 
-
-let id = 2266
+let id = 4430
 
 let loopObj = setInterval(() => {
     logger.info('GET NEWS ID=' + id)

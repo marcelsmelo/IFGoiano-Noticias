@@ -3,6 +3,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 
 global.logger = require('winston');
