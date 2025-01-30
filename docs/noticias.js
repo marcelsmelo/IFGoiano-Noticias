@@ -39,5 +39,27 @@
         }
       }
     },
+    "/ultimas-noticias/" : {
+      "get": {
+        "description": "Busca as ultimas noticias recuperadas do site do IFGoiano (ordem decrescente de data)",
+        "tags":['Noticias'],
+        "security": [
+            { "BearerAuth": [] }
+          ],
+        "parameters":[
+          "$ref": "#/components/parameters/lastIdParam",
+          "$ref": "#/components/parameters/limitParam",
+          "$ref": "#/components/parameters/campusParam",
+        ],
+        "responses": {
+          "200":{
+            "$ref": "#/components/responses/arrayNoticias"
+          },
+          "500":{
+            "$ref": "#/components/responses/genericError"
+          }
+        }
+      },
+  }
   }
 */
